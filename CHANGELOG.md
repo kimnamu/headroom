@@ -284,6 +284,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **code:** fix two `CodeAwareCompressor` AST-reassembly bugs: an exported JS/TS function or class (`export function foo() {`) produced a duplicated `export export` keyword and invalid syntax, because line-based node slicing (used to preserve indentation) pulled in the preceding `export` sibling's text on top of the `export_statement` handler's own prefix reconstruction. Separately, in every supported language, a doc comment immediately above a top-level function, class, or type was detached from its declaration during extraction and re-emitted in a cluster at the end of the compressed output instead of staying attached to what it documents.
 - * **proxy:** Buffered upstream responses containing a `server_tool_use` (or any other unrecognized Anthropic content block) no longer turn a fully-generated response into an HTTP 502. `StreamingMixin._response_to_sse` raised `ValueError` on unknown block types after the entire upstream generation had already been buffered, so a slow-but-successful response failed and the client retried the whole multi-minute request. Unknown blocks are now emitted verbatim in `content_block_start` (following the existing redacted_thinking` pattern), so `server_tool_use`, `server_tool_result`, `mcp_tool_use`, and future block types round-trip ([#1806](https://github.com/headroomlabs-ai/headroom/issues/1806)).
 
+## [0.39.0](https://github.com/headroomlabs-ai/headroom/compare/v0.38.0...v0.39.0) (2026-09-23)
+
+
+### Features
+
+* **savings:** carry exact cache-read cost in history rollups ([#3734](https://github.com/headroomlabs-ai/headroom/issues/3734)) ([1cb779e](https://github.com/headroomlabs-ai/headroom/commit/1cb779e1bcaebad4cba113bf2106bcd9825bef40))
+
+
+### Bug Fixes
+
+* **binaries:** fail closed when a download carries no sha256 pin ([#3724](https://github.com/headroomlabs-ai/headroom/issues/3724)) ([26a2c49](https://github.com/headroomlabs-ai/headroom/commit/26a2c4939c408bf6a0b7b20f3671378fc5cd61f6))
+* **cache:** stop prefix transforms from busting the provider cache ([#3735](https://github.com/headroomlabs-ai/headroom/issues/3735)) ([a2bf5ed](https://github.com/headroomlabs-ai/headroom/commit/a2bf5ed1ba456303173d35611e3844909a2614db))
+* **cache:** stop skipping tool compaction on a pinned tools array ([#3750](https://github.com/headroomlabs-ai/headroom/issues/3750)) ([a6a9cef](https://github.com/headroomlabs-ai/headroom/commit/a6a9cef9458e2e07c8222d76714e540a7de68ac4))
+* **install:** apply managed env vars added after a deployment was installed ([#3740](https://github.com/headroomlabs-ai/headroom/issues/3740)) ([a4cb2bc](https://github.com/headroomlabs-ai/headroom/commit/a4cb2bc02144d4bb6d8213c71f66ee039d03ae15))
+* **metrics:** split rate-limited by source and label failures by provider ([#3707](https://github.com/headroomlabs-ai/headroom/issues/3707)) ([5ff4ea1](https://github.com/headroomlabs-ai/headroom/commit/5ff4ea1ef948563304c9e8f4b9ccff0e2ae3aedd))
+* **savings:** report negative savings instead of flooring them at zero ([#3744](https://github.com/headroomlabs-ai/headroom/issues/3744)) ([1455f00](https://github.com/headroomlabs-ai/headroom/commit/1455f0022220f9c526e20f9898e4d56d951ec379))
+* **tests:** ask litellm for a model it prices instead of naming a retired one ([#3722](https://github.com/headroomlabs-ai/headroom/issues/3722)) ([0ad5e68](https://github.com/headroomlabs-ai/headroom/commit/0ad5e68ca559b3fc2c82a230a577b1b4bfc77792))
+* **tool-search:** detect every wire shape of client-side deferral ([#3746](https://github.com/headroomlabs-ai/headroom/issues/3746)) ([665b73d](https://github.com/headroomlabs-ai/headroom/commit/665b73df1b256c4eb0c41e44e29c93211e35f5d4))
+* **tool-search:** don't orphan deferred tools, and stop overstating the saving ([#3739](https://github.com/headroomlabs-ai/headroom/issues/3739)) ([85f9e01](https://github.com/headroomlabs-ai/headroom/commit/85f9e01d71c712ef071d64a54e3e1c57eb330147))
+* **tool-search:** make the core-tools override authoritative and the warning recurrent ([#3745](https://github.com/headroomlabs-ai/headroom/issues/3745)) ([a9757c9](https://github.com/headroomlabs-ai/headroom/commit/a9757c9c7e0e50635c5bc82d59a543cc45cde7b2))
+
 ## [0.38.0](https://github.com/headroomlabs-ai/headroom/compare/v0.37.0...v0.38.0) (2026-09-21)
 
 
